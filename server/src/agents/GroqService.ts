@@ -192,8 +192,42 @@ export class GroqService {
       }
     }
 
-    // Turn budget exhausted while the model was still calling tools. Return what
-    // was gathered and say plainly that the loop was cut short.
+    // Turn budget exhausted while the model was still calling tools. Force one
+    // last call with tools disabled so the model must turn whatever it already
+    // gathered into a real answer instead of leaving the shopper with a
+    // "ran out of turns" placeholder.
+    try {
+      const finalCompletion = await this.groq.chat.completions.create({
+        model: this.model,
+        messages: [
+          ...messages,
+          {
+            role: 'user',
+            content:
+              'Stop calling tools now. Using only the tool results already above, write your final natural-language answer to the shopper.',
+          },
+        ],
+        tool_choice: 'none',
+        temperature: config.llm.temperature,
+        max_tokens: config.llm.maxTokens,
+      });
+
+      const finalText = (finalCompletion.choices[0]?.message?.content || '').replace(/\*\*/g, '').trim();
+      if (finalText) {
+        return {
+          naturalLanguageResponse: finalText,
+          items: collectedItems,
+          upsellBundle: collectedUpsell,
+          targetPlatform: detectedPlatform,
+          toolTrace,
+          model: this.model,
+          turnsUsed,
+        };
+      }
+    } catch {
+      // Fall through to the placeholder below — better than throwing here.
+    }
+
     return {
       naturalLanguageResponse:
         `I gathered results across ${toolTrace.length} tool call${toolTrace.length === 1 ? '' : 's'} but ran out of ` +

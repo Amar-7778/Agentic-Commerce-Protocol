@@ -19,6 +19,24 @@ const campaignService = CampaignService.getInstance();
 
 const inr = (amount: number): string => `₹${amount.toLocaleString('en-IN')}`;
 
+/**
+ * The model calling this tool only sees platform IDs mentioned in prompts,
+ * descriptions, or its own memory — it can plausibly guess "platform_swiggy"
+ * when the real ID is "platform_swiggy_builders". Rather than silently
+ * filtering to zero rows on a typo'd ID, resolve it against what's actually
+ * registered: exact match first, then substring match either direction, and
+ * only give up (search all platforms) when nothing plausible exists.
+ */
+function resolvePlatformId(requested: string | undefined): string | undefined {
+  if (!requested || requested === 'all') return requested;
+
+  const registered = AdapterRegistry.getInstance().getAllPlatforms().map((p) => p.id);
+  if (registered.includes(requested)) return requested;
+
+  const match = registered.find((id) => id.includes(requested) || requested.includes(id));
+  return match || undefined;
+}
+
 export const MCP_TOOLS: McpToolDefinition[] = [
   // ==========================================
   // Group 1: CATALOG Tools
@@ -410,7 +428,7 @@ export async function executeMcpTool(name: string, args: Record<string, any> = {
       const searchResult = await catalogService.searchItems({
         query: args.query,
         category: args.category,
-        platform_id: args.platform_id,
+        platform_id: resolvePlatformId(args.platform_id),
         min_price: args.min_price,
         max_price: args.max_price,
         availability_status: args.availability_status,
