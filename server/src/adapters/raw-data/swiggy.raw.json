@@ -1,0 +1,495 @@
+{
+  "_note": "Sandbox fixture for the Swiggy Builders Club adapter. Used only when SWIGGY_AUTH_TOKEN is absent or the live MCP endpoint is unreachable, so the demo has a food-delivery + Instamart platform to search. Restaurant and brand names are real, currently-operating Indian chains; menu items and grocery SKUs are representative of their real offerings but not scraped from any live feed. Shape mirrors the live restaurant/menu and Instamart product responses.",
+  "restaurants": [
+    {
+      "id": "swiggy_rest_meghana_01",
+      "name": "Meghana Foods (Koramangala)",
+      "cuisine": ["Biryani", "Andhra", "South Indian"],
+      "area": "5th Block, Koramangala",
+      "avgRating": 4.6,
+      "ratingCount": 18420,
+      "costForTwo": 600,
+      "deliveryTimeMinutes": 32,
+      "heroImage": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_meghana_biryani_01",
+          "name": "Meghana Special Chicken Biryani",
+          "description": "Signature layered aromatic basmati rice cooked with spicy tender chicken pieces and Andhra spices.",
+          "price": 340.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 40,
+          "category": "Biryani & Rice",
+          "rating": 4.8,
+          "ratingCount": 9210,
+          "imageUrl": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_paneer_biryani_02",
+          "name": "Paneer 65 Biryani (Chef Special)",
+          "description": "Marinated cottage cheese cubes tossed in spicy red masala layered with fragrant saffron rice.",
+          "price": 310.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 25,
+          "category": "Biryani & Rice",
+          "rating": 4.5,
+          "ratingCount": 3140,
+          "imageUrl": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "swiggy_rest_truffles_02",
+      "name": "Truffles Cafe & Burgers",
+      "cuisine": ["American", "Burgers", "Desserts"],
+      "area": "Indiranagar 100ft Road",
+      "avgRating": 4.7,
+      "ratingCount": 22180,
+      "costForTwo": 500,
+      "deliveryTimeMinutes": 28,
+      "heroImage": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_all_american_burger_03",
+          "name": "All American Cheese & Bacon Burger",
+          "description": "Juicy grilled patty with double cheddar, caramelized onions and smoked barbecue drizzle on toasted brioche.",
+          "price": 290.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 60,
+          "category": "Burgers",
+          "rating": 4.7,
+          "ratingCount": 11890,
+          "imageUrl": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_dutch_truffle_cake_04",
+          "name": "Dutch Truffle Pastry Slice",
+          "description": "Rich dark Belgian chocolate ganache pastry slice finished with cocoa nibs.",
+          "price": 180.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 18,
+          "category": "Desserts",
+          "rating": 4.9,
+          "ratingCount": 7420,
+          "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "swiggy_rest_behrouz_03",
+      "name": "Behrouz Biryani",
+      "cuisine": ["Biryani", "Mughlai", "North Indian"],
+      "area": "HSR Layout",
+      "avgRating": 4.4,
+      "ratingCount": 31200,
+      "costForTwo": 450,
+      "deliveryTimeMinutes": 35,
+      "heroImage": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_behrouz_mutton_biryani_01",
+          "name": "Hyderabadi Mutton Dum Biryani",
+          "description": "Slow dum-cooked mutton biryani layered with saffron rice, fried onions and mint raita on the side.",
+          "price": 429.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 30,
+          "category": "Biryani",
+          "rating": 4.5,
+          "ratingCount": 8700,
+          "imageUrl": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_behrouz_veg_biryani_02",
+          "name": "Vegetable Dum Biryani",
+          "description": "Seasonal vegetables and paneer dum-cooked with fragrant basmati rice and whole spices.",
+          "price": 329.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 22,
+          "category": "Biryani",
+          "rating": 4.3,
+          "ratingCount": 4100,
+          "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "swiggy_rest_wowmomo_04",
+      "name": "Wow! Momo",
+      "cuisine": ["Tibetan", "Chinese", "Momos"],
+      "area": "Whitefield Main Road",
+      "avgRating": 4.2,
+      "ratingCount": 15600,
+      "costForTwo": 300,
+      "deliveryTimeMinutes": 25,
+      "heroImage": "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_wowmomo_chicken_steam_01",
+          "name": "Chicken Steam Momo (8 pcs)",
+          "description": "Handmade steamed momos filled with minced chicken, ginger and spring onion, served with spicy chutney.",
+          "price": 149.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 50,
+          "category": "Momos",
+          "rating": 4.4,
+          "ratingCount": 6200,
+          "imageUrl": "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_wowmomo_paneer_fried_02",
+          "name": "Paneer Fried Momo (8 pcs)",
+          "description": "Crispy fried momos stuffed with spiced paneer and herbs, served with schezwan mayo.",
+          "price": 159.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 35,
+          "category": "Momos",
+          "rating": 4.2,
+          "ratingCount": 3800,
+          "imageUrl": "https://images.unsplash.com/photo-1552611052-33e04de081de?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "swiggy_rest_dominos_05",
+      "name": "Domino's Pizza",
+      "cuisine": ["Pizza", "Italian", "Fast Food"],
+      "area": "Marathahalli",
+      "avgRating": 4.1,
+      "ratingCount": 42300,
+      "costForTwo": 550,
+      "deliveryTimeMinutes": 30,
+      "heroImage": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_dominos_peppy_paneer_01",
+          "name": "Peppy Paneer Pizza (Medium)",
+          "description": "Golden corn, crisp capsicum, and paneer chunks with double cheese and signature pizza sauce.",
+          "price": 379.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 45,
+          "category": "Pizza",
+          "rating": 4.3,
+          "ratingCount": 14200,
+          "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_dominos_chicken_pepperoni_02",
+          "name": "Pepperoni Feast Pizza (Medium)",
+          "description": "Double pepperoni layered with mozzarella cheese on a classic hand-tossed crust.",
+          "price": 449.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 38,
+          "category": "Pizza",
+          "rating": 4.4,
+          "ratingCount": 11800,
+          "imageUrl": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "swiggy_rest_bbqnation_06",
+      "name": "Barbeque Nation",
+      "cuisine": ["North Indian", "BBQ", "Grill"],
+      "area": "Brigade Road",
+      "avgRating": 4.5,
+      "ratingCount": 9800,
+      "costForTwo": 900,
+      "deliveryTimeMinutes": 40,
+      "heroImage": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
+      "menu": [
+        {
+          "id": "swiggy_item_bbqnation_chicken_tikka_01",
+          "name": "Grilled Chicken Tikka Platter",
+          "description": "Smoky char-grilled chicken tikka marinated in a house-special yogurt and spice blend, served with mint chutney.",
+          "price": 399.0,
+          "isVeg": false,
+          "inStock": true,
+          "portionsAvailable": 20,
+          "category": "Starters",
+          "rating": 4.6,
+          "ratingCount": 5300,
+          "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80"
+        },
+        {
+          "id": "swiggy_item_bbqnation_paneer_skewers_02",
+          "name": "Tandoori Paneer Skewers",
+          "description": "Cottage cheese cubes marinated in tandoori masala, char-grilled with bell peppers and onions.",
+          "price": 349.0,
+          "isVeg": true,
+          "inStock": true,
+          "portionsAvailable": 18,
+          "category": "Starters",
+          "rating": 4.4,
+          "ratingCount": 2900,
+          "imageUrl": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800&q=80"
+        }
+      ]
+    }
+  ],
+  "groceries": [
+    {
+      "id": "dept_dairy_bread",
+      "name": "Dairy & Bread",
+      "items": [
+        {
+          "id": "instamart_item_amul_butter_01",
+          "name": "Butter",
+          "brand": "Amul",
+          "description": "Pasteurized creamy table butter made from fresh milk.",
+          "price": 58.0,
+          "mrp": 62.0,
+          "packSize": "100 g",
+          "inStock": true,
+          "quantityAvailable": 240,
+          "rating": 4.7,
+          "ratingCount": 5200,
+          "imageUrl": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_amul_milk_02",
+          "name": "Toned Milk",
+          "brand": "Amul",
+          "description": "Fresh toned milk, pasteurized and homogenized.",
+          "price": 32.0,
+          "mrp": 34.0,
+          "packSize": "500 ml",
+          "inStock": true,
+          "quantityAvailable": 300,
+          "rating": 4.6,
+          "ratingCount": 3100,
+          "imageUrl": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_motherdairy_curd_03",
+          "name": "Fresh Dahi (Curd)",
+          "brand": "Mother Dairy",
+          "description": "Thick and creamy fresh curd made from toned milk.",
+          "price": 40.0,
+          "mrp": 42.0,
+          "packSize": "400 g",
+          "inStock": true,
+          "quantityAvailable": 150,
+          "rating": 4.5,
+          "ratingCount": 2400,
+          "imageUrl": "https://images.unsplash.com/photo-1571212515416-fca88c02d451?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_britannia_bread_04",
+          "name": "Whole Wheat Bread",
+          "brand": "Britannia",
+          "description": "Soft whole wheat bread loaf, high in fibre.",
+          "price": 45.0,
+          "mrp": 48.0,
+          "packSize": "400 g",
+          "inStock": true,
+          "quantityAvailable": 90,
+          "rating": 4.3,
+          "ratingCount": 1800,
+          "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80"
+        }
+      ]
+    },
+    {
+      "id": "dept_snacks_biscuits",
+      "name": "Snacks & Biscuits",
+      "items": [
+        {
+          "id": "instamart_item_parleg_01",
+          "name": "Parle-G Biscuits",
+          "brand": "Parle",
+          "description": "India's iconic glucose biscuits, a household favourite.",
+          "price": 30.0,
+          "mrp": 32.0,
+          "packSize": "250 g",
+          "inStock": true,
+          "quantityAvailable": 400,
+          "rating": 4.8,
+          "ratingCount": 9600,
+          "imageUrl": "https://images.unsplash.com/photo-1590080876207-6b0b8fb0f0a3?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_britannia_goodday_02",
+          "name": "Good Day Butter Cookies",
+          "brand": "Britannia",
+          "description": "Crunchy butter cookies with a rich, buttery taste.",
+          "price": 35.0,
+          "mrp": 38.0,
+          "packSize": "200 g",
+          "inStock": true,
+          "quantityAvailable": 210,
+          "rating": 4.6,
+          "ratingCount": 4700,
+          "imageUrl": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_haldiram_bhujia_03",
+          "name": "Aloo Bhujia",
+          "brand": "Haldiram's",
+          "description": "Crispy and spicy potato noodle snack, a classic Indian namkeen.",
+          "price": 55.0,
+          "mrp": 60.0,
+          "packSize": "200 g",
+          "inStock": true,
+          "quantityAvailable": 180,
+          "rating": 4.5,
+          "ratingCount": 3300,
+          "imageUrl": "https://images.unsplash.com/photo-1600952841320-db92ec4047ca?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_lays_04",
+          "name": "Lay's India's Magic Masala Chips",
+          "brand": "Lay's",
+          "description": "Crispy potato chips seasoned with India's favourite magic masala blend.",
+          "price": 20.0,
+          "mrp": 20.0,
+          "packSize": "52 g",
+          "inStock": true,
+          "quantityAvailable": 260,
+          "rating": 4.4,
+          "ratingCount": 5800,
+          "imageUrl": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&q=80"
+        }
+      ]
+    },
+    {
+      "id": "dept_instant_food",
+      "name": "Instant Food",
+      "items": [
+        {
+          "id": "instamart_item_maggi_01",
+          "name": "2-Minute Masala Noodles",
+          "brand": "Maggi",
+          "description": "India's favourite instant noodles with a masala tastemaker.",
+          "price": 14.0,
+          "mrp": 14.0,
+          "packSize": "70 g",
+          "inStock": true,
+          "quantityAvailable": 500,
+          "rating": 4.7,
+          "ratingCount": 12400,
+          "imageUrl": "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_mtr_upma_02",
+          "name": "Ready Mix Rava Upma",
+          "brand": "MTR",
+          "description": "Authentic South Indian rava upma mix, ready in minutes.",
+          "price": 65.0,
+          "mrp": 70.0,
+          "packSize": "500 g",
+          "inStock": true,
+          "quantityAvailable": 80,
+          "rating": 4.3,
+          "ratingCount": 950,
+          "imageUrl": "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=600&q=80"
+        }
+      ]
+    },
+    {
+      "id": "dept_beverages",
+      "name": "Beverages",
+      "items": [
+        {
+          "id": "instamart_item_tata_tea_01",
+          "name": "Tata Tea Gold",
+          "brand": "Tata",
+          "description": "Rich and aromatic blend of long leaf and CTC tea for a perfect cup.",
+          "price": 140.0,
+          "mrp": 150.0,
+          "packSize": "250 g",
+          "inStock": true,
+          "quantityAvailable": 130,
+          "rating": 4.6,
+          "ratingCount": 6100,
+          "imageUrl": "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_coca_cola_02",
+          "name": "Coca-Cola",
+          "brand": "Coca-Cola",
+          "description": "Classic carbonated cola soft drink, best served chilled.",
+          "price": 40.0,
+          "mrp": 40.0,
+          "packSize": "750 ml",
+          "inStock": true,
+          "quantityAvailable": 220,
+          "rating": 4.5,
+          "ratingCount": 7800,
+          "imageUrl": "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_realfruit_juice_03",
+          "name": "Real Fruit Power Mixed Fruit Juice",
+          "brand": "Real",
+          "description": "No added preservatives mixed fruit juice made from real fruit pulp.",
+          "price": 110.0,
+          "mrp": 120.0,
+          "packSize": "1 L",
+          "inStock": true,
+          "quantityAvailable": 95,
+          "rating": 4.3,
+          "ratingCount": 2100,
+          "imageUrl": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=600&q=80"
+        }
+      ]
+    },
+    {
+      "id": "dept_staples",
+      "name": "Atta, Rice & Dals",
+      "items": [
+        {
+          "id": "instamart_item_tata_salt_01",
+          "name": "Tata Salt",
+          "brand": "Tata",
+          "description": "Iodised, vacuum-evaporated crystal clear salt.",
+          "price": 28.0,
+          "mrp": 28.0,
+          "packSize": "1 kg",
+          "inStock": true,
+          "quantityAvailable": 300,
+          "rating": 4.7,
+          "ratingCount": 8900,
+          "imageUrl": "https://images.unsplash.com/photo-1518110925495-7b6d0eb5f5b6?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_aashirvaad_atta_02",
+          "name": "Aashirvaad Whole Wheat Atta",
+          "brand": "Aashirvaad",
+          "description": "100% whole wheat atta, stone-ground for soft rotis.",
+          "price": 285.0,
+          "mrp": 300.0,
+          "packSize": "5 kg",
+          "inStock": true,
+          "quantityAvailable": 60,
+          "rating": 4.6,
+          "ratingCount": 5400,
+          "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80"
+        },
+        {
+          "id": "instamart_item_indiagate_basmati_03",
+          "name": "India Gate Basmati Rice (Classic)",
+          "brand": "India Gate",
+          "description": "Long grain aged basmati rice with a rich aroma.",
+          "price": 640.0,
+          "mrp": 680.0,
+          "packSize": "5 kg",
+          "inStock": true,
+          "quantityAvailable": 45,
+          "rating": 4.5,
+          "ratingCount": 3600,
+          "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80"
+        }
+      ]
+    }
+  ]
+}
