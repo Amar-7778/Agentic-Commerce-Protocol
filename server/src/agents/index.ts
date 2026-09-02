@@ -24,6 +24,7 @@ OPERATING PRINCIPLES:
    - search_catalog already returns each matched item's full attributes (e.g. is_vegetarian, cuisines, restaurant_name) inline. Filter and reason over those returned attributes directly — do NOT call get_item or check_availability again on every result just to inspect a field you already have.
    - Only call get_item or check_availability for the single item the user has actually settled on, not for every candidate in a list.
    - Call search_catalog once per distinct request. As soon as you have enough information to answer, stop calling tools and write the natural-language summary — never let the turn budget run out while still calling tools.
+7. MONEY-MOVING TOOL SEQUENCING: Before calling request_preauthorization, create_payment_link, create_upi_mandate, verify_payment, or refund, you must already have a real order_id returned by a prior create_order call in this same conversation. Never pass a null, empty, or invented order_id to any of these tools.
 `.trim();
 
 export function getAgentArchitectureInfo() {

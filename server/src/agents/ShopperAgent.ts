@@ -9,7 +9,7 @@ import { RazorpayService } from '../services/RazorpayService.js';
 import { ConversationRepository, ConversationSession } from '../db/repositories/ConversationRepository.js';
 import { getDatabaseClient } from '../db/connection.js';
 import { UniversalItem } from '../catalog/types.js';
-import { config, formatMoney, taxRatePercentLabel } from '../config/index.js';
+import { config, formatMoney, taxRatePercentLabel, splitTaxInclusive } from '../config/index.js';
 import { contentTokens } from '../catalog/text.js';
 import crypto from 'crypto';
 
@@ -40,6 +40,8 @@ export interface ShopperReply {
   intent_options?: Array<{ label: string; value: string; description?: string }>;
   container_title?: string;
   container_subtitle?: string;
+  /** Present when this turn resolved a checkout — shaped like the /api/a2a/checkout response's `settlement`. */
+  order_settlement?: any;
 }
 
 function messageId(): string {
@@ -460,6 +462,17 @@ export class ShopperAgent {
       }
     }
 
+    // Checkout confirmation: a structured, unambiguous action like quantity or
+    // variant selection above — never left to the LLM to freehand the
+    // multi-tool create_order -> preauth -> payment_link sequence, which is
+    // exactly the kind of thing a sampled model occasionally sequences wrong
+    // (e.g. skipping create_order and passing a null order_id).
+    const buyIntentMatch =
+      /\b(buy|purchase|order it|order this|place\s*(the\s*)?order|check\s*out|checkout|confirm(\s*(the\s*)?(order|purchase))?|proceed(\s*(to\s*)?(pay|checkout|buy))?|go\s*ahead|i'?ll\s*take\s*(it|that)|pay\s*now)\b/i;
+    if (existingSession?.lastTopItem && buyIntentMatch.test(lower)) {
+      return this.confirmPurchase(conversationId, existingSession, toolEvents);
+    }
+
     // ---- Route across the universal catalog, then answer ----
 
     const { platformId: targetPlatformId } = await this.determineTargetPlatform(trimmed);
@@ -787,6 +800,103 @@ export class ShopperAgent {
       // History is a nicety, not a requirement — never block an answer on it.
       return '';
     }
+  }
+
+  /**
+   * Shape a settlement A2A response into what the client's chat UI already
+   * knows how to render — the same fields `/api/a2a/checkout` builds for the
+   * "Instant Checkout" button, so `OrderSettlementCard`/`StepUpApprovalCard`
+   * work unmodified regardless of which path produced the settlement.
+   */
+  private shapeSettlementForChat(settlement: {
+    order_id: string;
+    order_number: string;
+    status: 'authorized' | 'needs_human_confirmation' | 'denied' | 'paid';
+    authorization_ref?: string;
+    payment_url?: string;
+    mandate_link?: string;
+    total_amount: number;
+    reason_code: string;
+    natural_language_message: string;
+    merchant_name?: string;
+    applied_campaigns?: Array<{ id: string; name: string; discount_amount: number }>;
+  }) {
+    const { subtotal, tax } = splitTaxInclusive(settlement.total_amount);
+    return {
+      status: settlement.status,
+      merchant_name: settlement.merchant_name,
+      applied_campaigns: settlement.applied_campaigns,
+      order: {
+        id: settlement.order_id,
+        order_number: settlement.order_number,
+        total_amount: settlement.total_amount,
+        subtotal_amount: Math.round(subtotal),
+        tax_amount: Math.round(tax),
+        authorization_ref: settlement.authorization_ref,
+      },
+      governance_preauth: {
+        reason: settlement.natural_language_message,
+        reason_code: settlement.reason_code,
+      },
+      payment_details: {
+        payment_url: settlement.payment_url || settlement.mandate_link || `https://rzp.io/l/pay_${settlement.order_id}`,
+        mandate_link: settlement.mandate_link,
+        key_id: RazorpayService.getInstance().getPublishableKeyId(),
+      },
+    };
+  }
+
+  /**
+   * Deterministic checkout confirmation ("yes buy it", "checkout", "proceed
+   * to pay", ...). Runs the same `checkout()` path the Instant Checkout
+   * button uses, so settlement is always driven by the proven
+   * create_order -> preauth -> payment_link sequence rather than an LLM
+   * freehanding those tool calls in the right order.
+   */
+  private async confirmPurchase(
+    conversationId: string,
+    session: SessionContext,
+    toolEvents: string[]
+  ): Promise<ShopperReply> {
+    const baseItem = session.lastTopItem;
+    const quantity = session.quantity || 1;
+
+    toolEvents.push('checkout:confirm_purchase');
+    const settlementMessage = await this.checkout({
+      items: [{ item_id: baseItem.id, quantity }],
+      platform_id: session.lastPlatformId,
+      conversation_id: conversationId,
+    });
+    const settlement = settlementMessage.payload;
+    const shaped = this.shapeSettlementForChat(settlement);
+
+    let responseText: string;
+    if (settlement.status === 'authorized' || settlement.status === 'paid') {
+      responseText = `Order prepared for ${baseItem.title} (${formatMoney(settlement.total_amount)}). Use the payment card below to settle it.`;
+    } else if (settlement.status === 'needs_human_confirmation') {
+      responseText = `Policy governance step-up required for a transaction of ${formatMoney(settlement.total_amount)}. Supervisor authorization needed.`;
+    } else {
+      responseText = settlement.natural_language_message;
+    }
+
+    const history = [...(session.recentHistory || [])];
+    history.push({ role: 'assistant' as const, text: responseText });
+    session.recentHistory = history.slice(-8);
+    await this.saveSession(session);
+
+    return {
+      conversation_id: conversationId,
+      target_platform: session.lastPlatformId,
+      natural_language_response: responseText,
+      catalog_items: [baseItem],
+      proactive_upsell_bundle: [],
+      a2a_trace: this.router.getConversationTrace(conversationId),
+      engine_used: 'deterministic_vector_a2a',
+      tool_events: toolEvents,
+      order_settlement: shaped,
+      container_title: 'Order summary',
+      container_subtitle: `${settlement.order_number} · ${formatMoney(settlement.total_amount)}`,
+    };
   }
 
   /**

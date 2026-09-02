@@ -101,6 +101,24 @@ export const ShopperAssistant: React.FC<ShopperAssistantProps> = ({ config }) =>
         containerSubtitle: res.container_subtitle || undefined,
       };
 
+      // A deterministic checkout confirmation ("yes buy it", "checkout", ...)
+      // resolves inline via this same endpoint rather than a separate button
+      // click — render whichever card the settlement status calls for.
+      if (res.order_settlement) {
+        const settlement = res.order_settlement;
+        if (settlement.status === 'needs_human_confirmation') {
+          agentMessage.stepUpRequired = {
+            orderId: settlement.order?.id,
+            amount: settlement.order?.total_amount,
+            reason: settlement.governance_preauth?.reason || 'High-value transaction threshold',
+            reasonCode: settlement.governance_preauth?.reason_code || 'HIGH_VALUE_HUMAN_STEP_UP',
+          };
+        } else if (settlement.status === 'authorized' || settlement.status === 'paid') {
+          agentMessage.orderSettlement = settlement;
+        }
+        // 'denied' falls through — the natural-language text already explains it.
+      }
+
       setMessages((prev) => [...prev, agentMessage]);
       loadAuditLogs();
     } catch (err: any) {
@@ -149,6 +167,14 @@ export const ShopperAssistant: React.FC<ShopperAssistantProps> = ({ config }) =>
           },
         };
         setMessages((prev) => [...prev, stepUpMsg]);
+      } else if (settlement?.status === 'denied') {
+        const deniedMsg: ChatMessage = {
+          id: `denied_${Date.now()}`,
+          sender: 'system',
+          text: settlement.governance_preauth?.reason || `Checkout denied for ${item.title}.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+        setMessages((prev) => [...prev, deniedMsg]);
       } else {
         const successMsg: ChatMessage = {
           id: `settle_${Date.now()}`,
