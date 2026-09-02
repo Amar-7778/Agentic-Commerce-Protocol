@@ -59,7 +59,7 @@ AgenticCommerce provides a unified, production-ready infrastructure that enables
 
 ---
 
-## 2. The 6 MCP Tool Groups (21 Operational Tools)
+## 2. The 6 Tool Groups (21 Operational Tools)
 
 Every agent interaction is powered by a standardized Model Context Protocol (MCP) server:
 
