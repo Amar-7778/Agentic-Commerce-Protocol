@@ -1,8 +1,5 @@
 # AgenticCommerce: Multi-Platform Agentic Commerce Protocol & Governance Engine
 
-> **Razorpay Buildathon — Track 1: AI Growth & Agentic Commerce**  
-> *Architected by pairing Universal Commerce Schemas, MCP Tool Registries, A2A Multi-Agent Communication, Campaign Orchestration, and Cryptographic Policy Governance on Razorpay Rails.*
-
 ---
 
 ## 1. System Architecture Overview
